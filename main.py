@@ -174,7 +174,7 @@ async def modal_exec_in_sandbox(sandbox_id: str, command: list[str], save_image_
     p = await sb.exec.aio(*command)
     await p.wait.aio()
     if save_image_after_exec:
-        image_id = sb.snapshot_filesystem().object_id
+        image_id = (await sb.snapshot_filesystem.aio()).object_id
     else:
         image_id = None
 
@@ -227,10 +227,8 @@ async def modal_wait_for_process(sandbox_id: str, process_id: int) -> tuple[int,
     sb = await Sandbox.from_id.aio(sandbox_id)
     p = executing_processes.pop(process_id)
     await p.wait.aio()
-    global latest_sandbox_fs_image
-    latest_sandbox_fs_image = sb.snapshot_filesystem()
 
-    return p.returncode, await p.stdout.read.aio(), await p.stderr.read.aio(), latest_sandbox_fs_image.object_id
+    return p.returncode, await p.stdout.read.aio(), await p.stderr.read.aio()
 
 if __name__ == "__main__":
     mcp.run()
