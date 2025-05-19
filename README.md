@@ -1,7 +1,8 @@
 
 This is NOT an official Modal product.
 
-To use:
+# Installation
+
 * Install uv: https://docs.astral.sh/uv/getting-started/installation/
 * In Cursor, navigate to Settings > Cursor Settings > MCP, click "+Add new global MCP server", and add something like the following (be sure to provide the correct path):
 ```js
@@ -23,3 +24,7 @@ To use:
 }
 
 ```
+
+# Usage
+
+You can ask things like "Make a sandbox for me with an hour timeout", "Install node in the sandbox", etc.
