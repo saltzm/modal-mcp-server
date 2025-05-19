@@ -1,3 +1,6 @@
+# About
+
+This is a demo of how one can create and use Modal sandboxes from an MCP server.
 
 This is NOT an official Modal product.
 
