@@ -32,9 +32,24 @@ def get_current_time() -> datetime:
           If you want to mount a local directory to the sandbox, you can do so by passing the path to the directory
           to the mount_dir argument.
 
+          If you want to use a GPU, you can do so by passing the gpu argument - this can be one of:
+          * 'T4'
+          * 'L4'
+          * 'A10G'
+          * 'A100-40GB'
+          * 'A100-80GB'
+          * 'H100'
+          * 'H200'
+          * 'H100!' # Require H100 exactly, no other GPUs will do.
+
+          You can choose the number of GPUs and pass that in the gpu argument by separating the gpu type and number of GPUs with a colon,
+          for example 'T4:4' would create a sandbox with 4 T4 GPUs.
+
+          See up to date information here: https://modal.com/docs/guide/gpu#gpu-acceleration
+
           Show the user an ssh command to connect to the sandbox as root user.
           """)
-def modal_create_sandbox(timeout: int = 60 * 20, mount_dir: str = None) -> str:
+def modal_create_sandbox(timeout: int = 60 * 20, mount_dir: str = None, gpu: str = None) -> str:
     from modal import App, Sandbox, Image, Mount
     app = App.lookup("modal-sandbox", create_if_missing=True)
     # Read local public key
@@ -78,6 +93,7 @@ def modal_create_sandbox(timeout: int = 60 * 20, mount_dir: str = None) -> str:
         "-p", "22",
         app=app, 
         image=image,
+        gpu=gpu,
         mounts=mounts_list,
         encrypted_ports=[8000, 8001, 8002], 
         unencrypted_ports=[22],
